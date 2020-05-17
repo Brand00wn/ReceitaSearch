@@ -1,0 +1,60 @@
+﻿@model EntidadeModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+@section Scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <script>
+        $("#cnpj").mask("99.999.999/9999-99");
+
+        if ($("#message").text() != "") {
+            setTimeout(function () { $("#message").text(""); }, 5000);
+        }        
+    </script>
+}
+
+<div class="text-center">
+
+    <h1 class="display-4">Insira abaixo um CNPJ</h1>
+    <p>Esta aplicação utiliza a API ReceitaWS <a target="_blank" href="https://receitaws.com.br/api">clique aqui</a> para saber mais.</p>
+
+    @using (Html.BeginForm("SubmitForm", "Home", FormMethod.Post))
+    {
+        <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto text-center form p-4">
+            <form method="post" action="Home/SubmitForm" class="justify-content-center">
+                <div class="input-group">
+                    <input type="text" class="form-control text-center" name="cnpj" id="cnpj">
+                    <span class="input-group-btn" style="margin-left: 5px;">
+                        <button type="submit" class="btn btn-outline-secondary">CONSULTE</button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    }
+    
+    <p id="message">@Model.message</p>
+
+    <hr />
+
+    <div class="container">
+        @if (Model.Entidades.Count > 0)
+        {
+            <h3> Pessoas Jurídicas Cadastradas </h3>
+        }
+        <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 mx-auto text-center form p-4">
+            <ul class="list-group">
+                @foreach (var entidade in Model.Entidades)
+                {
+                    <li class="list-group-item">
+                        <a href="@Url.Action("DetalhesEntidade", "Home", new { entidade = entidade.Id })" class="float-left" style="text-transform:uppercase;">@entidade.Nome</a>
+                        <a href="@Url.Action("DeleteEntidade", "Home", new { entidade = entidade.Id })" class="float-lg-right">
+                            <i class="fas fa-trash" style="color: red;"></i>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>

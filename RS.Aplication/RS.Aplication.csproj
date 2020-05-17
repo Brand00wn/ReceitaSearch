@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ReceitaSearch.Infra.CrossCutting\RS.Infra.CrossCutting.Adapter.csproj" />
+    <ProjectReference Include="..\RS.Application.DTO\RS.Application.DTO.csproj" />
+    <ProjectReference Include="..\Rs.Domain.Core\Rs.Domain.Core.csproj" />
+  </ItemGroup>
+
+</Project>

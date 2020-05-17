@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ReceitaSearch.Domain\RS.Domain.csproj" />
+    <ProjectReference Include="..\RS.Application.DTO\RS.Application.DTO.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,192 @@
+﻿@model EntidadeModel
+
+@{
+    ViewData["Title"] = "DetalhesEntidade";
+}
+@section Scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <script>
+        $(document).ready(function () {
+            $("#myInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#myList li").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+}
+
+@*<div>
+        <a asp-action="Index" class="btn btn-outline-secondary">VOLTAR</a>
+    </div>*@
+<div class="text-center">
+    <div class="row">
+        <div class="col-2">
+            <a asp-action="Index" class="btn btn-outline-secondary float-left mt-4">VOLTAR</a>
+        </div>
+        <div class="col">
+            <h1 class="display-4">@Model.Entidades.FirstOrDefault().Nome</h1>
+        </div>
+        <div class="col-2">
+            <a href="@Url.Action("DeleteEntidade", "Home", new { entidade = Model.Entidades.FirstOrDefault().Id })" class="btn btn-danger float-right mt-4">DELETE</a>
+        </div>
+    </div>
+
+    <form>
+        <div class="card">
+            <div class="card-header">
+                DADOS CADASTRAIS
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <label for="fantasia" class="float-left">Fantasia:</label>
+                        <input class="form-control" type="text" readonly value="@Model.Entidades.FirstOrDefault().Fantasia">
+                    </div>
+                    <div class="col">
+                        <label for="cnpj" class="float-left">CNPJ:</label>
+                        <input class="form-control" type="text" readonly value="@Model.Entidades.FirstOrDefault().CNPJ">
+                    </div>
+                    <div class="col">
+                        <label for="naturezaJuridica" class="float-left">Natureza Jurídica:</label>
+                        <input class="form-control" type="text" readonly value="@Model.Entidades.FirstOrDefault().NaturezaJuridica">
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col">
+                        <label for="email" class="float-left">Email:</label>
+                        <input class="form-control" type="email" readonly value="@Model.Entidades.FirstOrDefault().Email">
+                    </div>
+                    <div class="col-2">
+                        <label for="telefone" class="float-left">Telefone:</label>
+                        <input class="form-control" type="tel" readonly value="@Model.Entidades.FirstOrDefault().Telefone">
+                    </div>
+                    <div class="col">
+                        <label for="tipo" class="float-left">Tipo:</label>
+                        <input class="form-control" type="text" readonly value="@Model.Entidades.FirstOrDefault().Tipo">
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col">
+                        <label for="municipioUf" class="float-left">Município:</label>
+                        <input class="form-control" type="email" readonly value="@Model.Entidades.FirstOrDefault().Endereco.Municipio - @Model.Entidades.FirstOrDefault().Endereco.UF">
+                    </div>
+                    <div class="col">
+                        <label for="bairro" class="float-left">Bairro:</label>
+                        <input class="form-control" type="tel" readonly value="@Model.Entidades.FirstOrDefault().Endereco.Bairro">
+                    </div>
+                    <div class="col">
+                        <label for="cep" class="float-left">CEP:</label>
+                        <input class="form-control" type="text" readonly value="@Model.Entidades.FirstOrDefault().Endereco.CEP">
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col">
+                        <label for="logradouro" class="float-left">Logradouro:</label>
+                        <input class="form-control" type="email" readonly value="@Model.Entidades.FirstOrDefault().Endereco.Logradouro">
+                    </div>
+                    <div class="col-2">
+                        <label for="numero" class="float-left">Numero:</label>
+                        <input class="form-control" type="tel" readonly value="@Model.Entidades.FirstOrDefault().Endereco.Numero">
+                    </div>
+                    <div class="col">
+                        <label for="complemento" class="float-left">Complemento:</label>
+                        <input class="form-control" type="text" readonly value="@Model.Entidades.FirstOrDefault().Endereco.Complemento">
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#atividadesPrincipais">
+                            ATIVIDADES PRINCIPAIS
+                        </button>
+                    </div>
+                    <div class="col">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#atividadesSecundarias">
+                            ATIVIDADES SECUNDÁRIAS
+                        </button>
+                    </div>
+                    <div class="col">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sociosEAdministradores">
+                            SÓCIOS E ADMINISTRADORES
+                        </button>
+                    </div>
+                </div>
+
+
+                <!-- Atividades Principais -->
+                <div class="modal fade" id="atividadesPrincipais" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">ATIVIDADES PRINCIPAIS</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <ul class="list-group list-group-flush mt-2" id="myList">
+                                    @foreach (var atividade in Model.Entidades.FirstOrDefault().AtividadePrincipal)
+                                    {
+                                        <li class="list-group-item">@atividade.Atividade.Text (@atividade.Atividade.Code)</li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Atividades Secundarias -->
+                <div class="modal fade" id="atividadesSecundarias" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">ATIVIDADES SECUNDARIAS</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <ul class="list-group list-group-flush mt-2" id="myList">
+                                    @foreach (var atividade in Model.Entidades.FirstOrDefault().AtividadeSecundaria)
+                                    {
+                                        <li class="list-group-item">@atividade.Atividade.Text (@atividade.Atividade.Code)</li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sócios e ADM -->
+                <div class="modal fade" id="sociosEAdministradores" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">SÓCIOS E ADMINISTRADORES</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <input class="form-control" type="text" placeholder="Search" aria-label="Search" id="myInput">
+                                <ul class="list-group list-group-flush mt-2" id="myList">
+                                    @foreach (var sA in Model.Entidades.FirstOrDefault().QSA)
+                                    {
+                                        <li class="list-group-item">@sA.Nome (@sA.Qualificacao)</li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+

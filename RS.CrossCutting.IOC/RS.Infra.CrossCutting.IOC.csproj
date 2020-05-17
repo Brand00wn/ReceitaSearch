@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="5.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ReceitaSearch.Infra.CrossCutting\RS.Infra.CrossCutting.Adapter.csproj" />
+    <ProjectReference Include="..\RS.Aplication\RS.Aplication.csproj" />
+    <ProjectReference Include="..\RS.Domain.Services\RS.Domain.Services.csproj" />
+    <ProjectReference Include="..\RS.Infra.Repository\RS.Infra.Repository.csproj" />
+  </ItemGroup>
+
+</Project>
