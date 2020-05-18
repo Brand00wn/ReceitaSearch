@@ -11,12 +11,42 @@
 
         if ($("#message").text() != "") {
             setTimeout(function () { $("#message").text(""); }, 5000);
-        }        
+        }
+    </script>
+    <script>
+        // Set the date we're counting down to
+        var date = '@Model.dtProximaRequisicao';
+
+        if (date != '') {
+            var countDownDate = new Date(date).getTime();
+
+            // Update the count down every 1 second
+            var x = setInterval(function () {
+
+                // Get today's date and time
+                var now = new Date('@DateTime.Now').getTime();
+
+                // Find the distance between now and the count down date
+                var distance = countDownDate - now;
+
+                // Time calculations for days, hours, minutes and seconds
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                // Output the result in an element with id="demo"
+                document.getElementById("message").innerHTML = "Próxima requisição em " + seconds + " s";
+
+                // If the count down is over, write some text
+                if (distance < 0) {
+                    clearInterval(x);
+                    document.getElementById("message").innerHTML = "";
+                }
+            }, 1000);
+        }
+
     </script>
 }
 
 <div class="text-center">
-
     <h1 class="display-4">Insira abaixo um CNPJ</h1>
     <p>Esta aplicação utiliza a API ReceitaWS <a target="_blank" href="https://receitaws.com.br/api">clique aqui</a> para saber mais.</p>
 
@@ -33,8 +63,9 @@
             </form>
         </div>
     }
-    
+
     <p id="message">@Model.message</p>
+    <p id="demo"></p>
 
     <hr />
 

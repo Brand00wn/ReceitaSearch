@@ -11,5 +11,7 @@ namespace RS.Presentation.Models
         public List<EntidadeDTO> Entidades { get; set; }
 
         public string message { get; set; }
+
+        public string dtProximaRequisicao { get; set; }
     }
 }

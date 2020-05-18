@@ -39,6 +39,17 @@ namespace RS.Presentation.Controllers
             {
                 
                 HttpResponseMessage response = await client.GetAsync($"https://www.receitaws.com.br/v1/cnpj/{cnpj}");
+                if(TempData.Peek("dtProximaRequisicao") == null)
+                {
+                    TempData["dtProximaRequisicao"] = DateTime.Now.AddMinutes(1);
+                }
+                else
+                {
+                    if (DateTime.Now.Subtract(Convert.ToDateTime(TempData.Peek("dtProximaRequisicao"))).TotalMinutes > 1)
+                    {
+                        TempData.Remove("dtProximaRequisicao");
+                    }
+                }
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -61,7 +72,7 @@ namespace RS.Presentation.Controllers
                 }
                 else if (response.StatusCode.Equals(HttpStatusCode.TooManyRequests))
                 {
-                    model.message = "Você atingiu o limite máximo de requisições.";
+                    model.dtProximaRequisicao = TempData.Peek("dtProximaRequisicao").ToString();
                     return model;
                 }
                 else
@@ -97,6 +108,7 @@ namespace RS.Presentation.Controllers
                     }
                     else
                     {
+                        model.dtProximaRequisicao = entidade.Result.dtProximaRequisicao;
                         model.message = entidade.Result.message;
                     }
                 }
