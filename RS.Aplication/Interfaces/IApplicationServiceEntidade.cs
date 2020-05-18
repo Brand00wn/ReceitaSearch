@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace RS.Aplication.Interfaces
 {
@@ -20,6 +21,8 @@ namespace RS.Aplication.Interfaces
         void Dispose();
 
         EntidadeDTO CheckIfAlreadyExists(EntidadeDTO obj);
+
+        Task<RequisitionDTO> RequestAPI(string cnpj);
 
     }
 }

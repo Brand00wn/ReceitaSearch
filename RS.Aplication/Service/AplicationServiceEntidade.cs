@@ -1,10 +1,15 @@
-﻿using ReceitaSearch.Domain.Core.Interfaces.Services;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using ReceitaSearch.Domain.Core.Interfaces.Services;
 using ReceitaSearch.Infra.CrossCutting;
 using RS.Aplication.Interfaces;
 using RS.Application.DTO.DTO;
 using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace RS.Aplication.Service
 {
@@ -58,6 +63,7 @@ namespace RS.Aplication.Service
 
         public void Remove(EntidadeDTO obj)
         {
+            obj.Ativo = false;
             var objEntidade = _mapperEntidade.MapperToEntity(obj);
             _serviceEntidade.Remove(objEntidade);
         }
@@ -80,6 +86,50 @@ namespace RS.Aplication.Service
             else
             {
                 return null;
+            }
+        }
+
+        public async Task<RequisitionDTO> RequestAPI(string cnpj)
+        {
+            RequisitionDTO model = new RequisitionDTO();
+            HttpClient client = new HttpClient();
+
+            try
+            {
+
+                HttpResponseMessage response = await client.GetAsync($"https://www.receitaws.com.br/v1/cnpj/{cnpj}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+
+                    JsonReceiverDTO obJson = JsonConvert.DeserializeObject<JsonReceiverDTO>(json);
+                    if (obJson.status == "OK")
+                    {
+                        model.entidade = new EntidadeDTO();
+                        model.entidade = obJson.LoadEntidadeJson(obJson);
+                        model.statusCode = response.StatusCode;
+                    }
+                    else
+                    {
+                        dynamic jObject = JObject.Parse(json);
+                        model.statusCode = response.StatusCode;
+                        model.message = jObject.message;
+                    }
+
+                    return model;
+                }
+                else
+                {
+                    model.statusCode = response.StatusCode;
+                    model.message = response.RequestMessage.ToString();
+                    return model;
+                }
+            }
+            catch (Exception ex)
+            {
+                model.message = "Erro na requisição.";
+                return model;
             }
         }
     }

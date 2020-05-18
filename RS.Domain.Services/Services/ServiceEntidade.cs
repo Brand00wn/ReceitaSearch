@@ -32,6 +32,12 @@ namespace RS.Domain.Services.Services
             return _repositoryEntidade.GetById(id);
         }
 
+        public override void Remove(Entidade obj)
+        {
+            this._repositoryEntidade.DetachLocal(_ => _.Id == obj.Id);
+            _repositoryEntidade.Update(obj);
+        }
+
         public override void Update(Entidade obj)
         {
             this._repositoryEntidade.DetachLocal(_ => _.Id == obj.Id);

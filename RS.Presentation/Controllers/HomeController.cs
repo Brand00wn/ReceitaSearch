@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using RS.Aplication.Interfaces;
 using RS.Application.DTO.DTO;
-using RS.Domain.Entities;
 using RS.Presentation.Models;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Net;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace RS.Presentation.Controllers
 {
@@ -24,102 +19,16 @@ namespace RS.Presentation.Controllers
 
         private readonly IApplicationServiceEntidade _applicationServiceEntidade;
 
+        
         public HomeController(ILogger<HomeController> logger, IApplicationServiceEntidade applicationServiceEntidade)
         {
             _applicationServiceEntidade = applicationServiceEntidade;
             _logger = logger;
         }
 
-        public async Task<EntidadeModel> RequestAPI(string cnpj)
-        {
-            EntidadeModel model = new EntidadeModel();
-            HttpClient client = new HttpClient();
-
-            try
-            {
-                
-                HttpResponseMessage response = await client.GetAsync($"https://www.receitaws.com.br/v1/cnpj/{cnpj}");
-                if(TempData.Peek("dtProximaRequisicao") == null)
-                {
-                    TempData["dtProximaRequisicao"] = DateTime.Now.AddMinutes(1);
-                }
-                else
-                {
-                    if (DateTime.Now.Subtract(Convert.ToDateTime(TempData.Peek("dtProximaRequisicao"))).TotalSeconds >= 0)
-                    {
-                        TempData.Remove("dtProximaRequisicao");
-                    }
-                }
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var json = await response.Content.ReadAsStringAsync();
-
-                    JsonReceiver obJson = JsonConvert.DeserializeObject<JsonReceiver>(json);
-                    if (obJson.status == "OK")
-                    {
-                        model.Entidades = new List<EntidadeDTO>();
-                        model.Entidades.Add(obJson.LoadEntidadeJson(obJson));
-                        model.message = "OK";
-                    }
-                    else
-                    {
-                        dynamic jObject = JObject.Parse(json);
-                        model.message = jObject.message;
-                    }
-
-                    return model;
-                }
-                else if (response.StatusCode.Equals(HttpStatusCode.TooManyRequests))
-                {
-                    ViewData["dtProximaRequisicao"] = TempData.Peek("dtProximaRequisicao").ToString();
-                    TempData["requestBlocked"] = true;
-                    return model;
-                }
-                else
-                {
-                    model.message = "Erro ao tentar acessar o endereço.";
-                    return model;
-                }
-            }
-            catch (Exception ex)
-            {
-                model.message = "Erro na requisição.";
-                return model;
-            }
-        }
-
-        public IActionResult SubmitForm()
-        {
-            EntidadeModel model = new EntidadeModel();
-            var cnpj = Request.Form["cnpj"];
-
-            if (!String.IsNullOrEmpty(cnpj))
-            {
-                cnpj = Regex.Replace(cnpj, "[^0-9]", "");
-
-                var entidade = Task.Run(async () => await RequestAPI(cnpj));
-
-                if (entidade.Result != null)
-                {
-                    if (entidade.Result.message == "OK")
-                    {
-                        _applicationServiceEntidade.Add(entidade.Result.Entidades.FirstOrDefault());
-                        model.Entidades = _applicationServiceEntidade.GetAll().ToList();
-                    }
-                    else
-                    {
-                        model.message = entidade.Result.message;
-                    }
-                }
-            }
-
-            return RedirectToAction("Index", model);
-        }
-
         public IActionResult Index(EntidadeModel model)
         {
-            if(TempData.Peek("dtProximaRequisicao") != null && TempData.Peek("requestBlocked") != null)
+            if (TempData.Peek("dtProximaRequisicao") != null && TempData.Peek("requestBlocked") != null)
             {
                 ViewData["dtProximaRequisicao"] = TempData.Peek("dtProximaRequisicao").ToString();
             }
@@ -129,6 +38,61 @@ namespace RS.Presentation.Controllers
             return View("Index", model);
         }
 
+        /// <summary>
+        /// Submits form, get the input text value masked as CNPJ and send it as parameter to ReceitaWS request
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult SubmitForm()
+        {
+            EntidadeModel model = new EntidadeModel();
+            var cnpj = Request.Form["cnpj"];
+
+            if (!String.IsNullOrEmpty(cnpj))
+            {
+                cnpj = Regex.Replace(cnpj, "[^0-9]", "");
+
+                var entidade = Task.Run(async () => await _applicationServiceEntidade.RequestAPI(cnpj));
+                
+
+                if (entidade.Result != null)
+                {
+                    if (TempData.Peek("dtProximaRequisicao") == null)
+                    {
+                        TempData["dtProximaRequisicao"] = DateTime.Now.AddMinutes(1);
+                    }
+                    else
+                    {
+                        if (DateTime.Now.Subtract(Convert.ToDateTime(TempData.Peek("dtProximaRequisicao"))).TotalSeconds >= 0)
+                        {
+                            TempData.Remove("dtProximaRequisicao");
+                        }
+                    }
+
+                    if (entidade.Result.statusCode.Equals(HttpStatusCode.OK))
+                    {
+                        _applicationServiceEntidade.Add(entidade.Result.entidade);
+                        model.Entidades = _applicationServiceEntidade.GetAll().ToList();
+                    }
+                    else if(entidade.Result.statusCode.Equals(HttpStatusCode.TooManyRequests))
+                    {
+                        ViewData["dtProximaRequisicao"] = TempData.Peek("dtProximaRequisicao").ToString();
+                        TempData["requestBlocked"] = true;
+                    }
+                    else
+                    {
+                        model.message = "Erro ao enviar requisição.";
+                    }
+                }
+            }
+
+            return RedirectToAction("Index", model);
+        }
+
+        /// <summary>
+        /// Redirect to a View with all of relevant details related to this Business Entity.
+        /// </summary>
+        /// <param name="entidade"></param>
+        /// <returns></returns>
         public IActionResult DetalhesEntidade(int entidade)
         {
             EntidadeModel model = new EntidadeModel();
@@ -139,6 +103,11 @@ namespace RS.Presentation.Controllers
             return View("DetalhesEntidade", model);
         }
 
+        /// <summary>
+        /// "Remove" the Business Entity... Actually, just set the "Ativo" field to false. This keeps a history of registered Business Entities  .
+        /// </summary>
+        /// <param name="entidade"></param>
+        /// <returns></returns>
         public IActionResult DeleteEntidade(int entidade)
         {
             EntidadeModel model = new EntidadeModel();
@@ -147,10 +116,13 @@ namespace RS.Presentation.Controllers
             try
             {
                 EntidadeDTO entidadeDTO = _applicationServiceEntidade.GetById(entidade);
-                entidadeDTO.Ativo = false;
-                _applicationServiceEntidade.Update(entidadeDTO);
-                model.Entidades = _applicationServiceEntidade.GetAll().ToList();
-                model.message = "Registro removido com sucesso.";
+
+                if(entidadeDTO != null)
+                {
+                    _applicationServiceEntidade.Remove(entidadeDTO);
+                    model.Entidades = _applicationServiceEntidade.GetAll().ToList();
+                    model.message = "Registro removido com sucesso.";
+                }
 
                 return View("Index", model);
             }
@@ -163,7 +135,7 @@ namespace RS.Presentation.Controllers
             }
         }
 
-
+        //Error Page
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
