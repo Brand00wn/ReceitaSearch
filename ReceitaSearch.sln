@@ -15,25 +15,25 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.1 - Data", "4.1 - Data", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.2 - CrossCutting", "4.2 - CrossCutting", "{D9CA32C7-7AF7-436C-BF5B-57E4EA0A5A99}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RS.Domain", "ReceitaSearch.Domain\RS.Domain.csproj", "{54B7BA04-8138-4172-8817-518EA6F5BBD4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RS.Domain", "ReceitaSearch.Domain\RS.Domain.csproj", "{54B7BA04-8138-4172-8817-518EA6F5BBD4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RS.Infra.Data", "ReceitaSearch.Infra.Data\RS.Infra.Data.csproj", "{87AA6185-486B-4117-9FF4-B6091C5D5AE0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RS.Infra.Data", "ReceitaSearch.Infra.Data\RS.Infra.Data.csproj", "{87AA6185-486B-4117-9FF4-B6091C5D5AE0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RS.Infra.CrossCutting.Adapter", "ReceitaSearch.Infra.CrossCutting\RS.Infra.CrossCutting.Adapter.csproj", "{DC8FE808-F326-48AF-A074-18AAC6E66EDA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RS.Infra.CrossCutting.Adapter", "ReceitaSearch.Infra.CrossCutting\RS.Infra.CrossCutting.Adapter.csproj", "{DC8FE808-F326-48AF-A074-18AAC6E66EDA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rs.Domain.Core", "Rs.Domain.Core\Rs.Domain.Core.csproj", "{489B7326-0B63-4DF5-9F0C-1EFE3CEAEC9E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rs.Domain.Core", "Rs.Domain.Core\Rs.Domain.Core.csproj", "{489B7326-0B63-4DF5-9F0C-1EFE3CEAEC9E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RS.Domain.Services", "RS.Domain.Services\RS.Domain.Services.csproj", "{307479B9-9D60-4FE2-8292-777F3022A6C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RS.Domain.Services", "RS.Domain.Services\RS.Domain.Services.csproj", "{307479B9-9D60-4FE2-8292-777F3022A6C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RS.Aplication", "RS.Aplication\RS.Aplication.csproj", "{DE10FF20-FC16-40A2-B8D9-339AA98940C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RS.Aplication", "RS.Aplication\RS.Aplication.csproj", "{DE10FF20-FC16-40A2-B8D9-339AA98940C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RS.Application.DTO", "RS.Application.DTO\RS.Application.DTO.csproj", "{6E9A9C7B-EBA4-43CD-8580-BDF362375E17}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RS.Application.DTO", "RS.Application.DTO\RS.Application.DTO.csproj", "{6E9A9C7B-EBA4-43CD-8580-BDF362375E17}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RS.Infra.Repository", "RS.Infra.Repository\RS.Infra.Repository.csproj", "{E58CD575-8FA2-4600-8B36-FD4951734ABF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RS.Infra.Repository", "RS.Infra.Repository\RS.Infra.Repository.csproj", "{E58CD575-8FA2-4600-8B36-FD4951734ABF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RS.Infra.CrossCutting.IOC", "RS.CrossCutting.IOC\RS.Infra.CrossCutting.IOC.csproj", "{0E2F10CE-B3B3-4813-9909-9583B42C95A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RS.Infra.CrossCutting.IOC", "RS.CrossCutting.IOC\RS.Infra.CrossCutting.IOC.csproj", "{0E2F10CE-B3B3-4813-9909-9583B42C95A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RS.Presentation", "RS.Presentation\RS.Presentation.csproj", "{393B7E5D-386E-4E26-9E90-314F50A2FCA0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RS.Presentation", "RS.Presentation\RS.Presentation.csproj", "{393B7E5D-386E-4E26-9E90-314F50A2FCA0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

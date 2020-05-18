@@ -47,7 +47,6 @@ namespace RS.Infra.CrossCutting.Adapter.Map
                 Telefone = EntidadeDTO.Telefone,
                 Tipo = EntidadeDTO.Tipo,
                 Ativo = EntidadeDTO.Ativo,
-                DtInsercaoBanco = EntidadeDTO.DtInsercaoBanco,
                 EnderecoId = EntidadeDTO.EnderecoId
             };
 
@@ -88,7 +87,6 @@ namespace RS.Infra.CrossCutting.Adapter.Map
                     Telefone = item.Telefone,
                     Tipo = item.Tipo,
                     Ativo = item.Ativo,
-                    DtInsercaoBanco = item.DtInsercaoBanco,
                     EnderecoId = item.EnderecoId
                 };
 
@@ -130,7 +128,6 @@ namespace RS.Infra.CrossCutting.Adapter.Map
                 Telefone = Entidade.Telefone,
                 Tipo = Entidade.Tipo,
                 Ativo = Entidade.Ativo,
-                DtInsercaoBanco = Entidade.DtInsercaoBanco,
                 EnderecoId = Entidade.EnderecoId
             };
 

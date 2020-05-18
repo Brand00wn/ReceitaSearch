@@ -66,8 +66,6 @@ namespace RS.Application.DTO.DTO
         public virtual List<QSA> QSA { get; set; }
         #endregion
 
-        public DateTime DtInsercaoBanco { get; set; }
-
         public bool Ativo { get; set; }
     }
 }

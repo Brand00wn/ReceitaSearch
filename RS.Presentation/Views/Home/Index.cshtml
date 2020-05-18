@@ -14,7 +14,7 @@
         }
     </script>
     <script>
-        var date = '@Model.dtProximaRequisicao';
+        var date = '@ViewData["dtProximaRequisicao"]';
 
         if (date != '') {
             var countDownDate = new Date(date).getTime();

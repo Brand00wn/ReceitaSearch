@@ -64,7 +64,6 @@ namespace RS.Presentation.Models
             objLoaded.Status = obJson.status;
             objLoaded.Telefone = obJson.telefone;
             objLoaded.Tipo = obJson.tipo;
-            objLoaded.DtInsercaoBanco = DateTime.Now;
             objLoaded.AtividadePrincipal = LoadAtividadePrincipalJson(obJson.atividade_principal);
             objLoaded.AtividadeSecundaria = LoadAtividadeSecundariaJson(obJson.atividades_secundarias);
             objLoaded.Ativo = true;

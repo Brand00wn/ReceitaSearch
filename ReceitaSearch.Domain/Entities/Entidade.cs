@@ -53,8 +53,6 @@ namespace RS.Domain.Entities
         public virtual List<QSA> QSA { get; set; }
 
 
-        public DateTime DtInsercaoBanco { get; set; }
-
         public bool Ativo { get; set; }
     }
 }

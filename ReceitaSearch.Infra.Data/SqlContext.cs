@@ -25,11 +25,6 @@ namespace DDDWebAPI.Infrastructure.Data
         {
             modelBuilder.Entity<EntidadeAtividadePrincipal>().HasKey(eap => new { eap.AtividadeId, eap.EntidadeId });
             modelBuilder.Entity<EntidadeAtividadeSecundaria>().HasKey(eas => new { eas.AtividadeId, eas.EntidadeId });
-
-            modelBuilder.Entity<Entidade>()
-              .HasMany<QSA>(c => c.QSA)
-              .WithOne(q => q.Entidade)
-              .OnDelete(DeleteBehavior.Cascade);
         }
 
         public override int SaveChanges()

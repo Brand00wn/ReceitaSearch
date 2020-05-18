@@ -72,7 +72,8 @@ namespace RS.Presentation.Controllers
                 }
                 else if (response.StatusCode.Equals(HttpStatusCode.TooManyRequests))
                 {
-                    model.dtProximaRequisicao = TempData.Peek("dtProximaRequisicao").ToString();
+                    ViewData["dtProximaRequisicao"] = TempData.Peek("dtProximaRequisicao").ToString();
+                    TempData["requestBlocked"] = true;
                     return model;
                 }
                 else
@@ -108,7 +109,6 @@ namespace RS.Presentation.Controllers
                     }
                     else
                     {
-                        model.dtProximaRequisicao = entidade.Result.dtProximaRequisicao;
                         model.message = entidade.Result.message;
                     }
                 }
@@ -119,6 +119,11 @@ namespace RS.Presentation.Controllers
 
         public IActionResult Index(EntidadeModel model)
         {
+            if(TempData.Peek("dtProximaRequisicao") != null && TempData.Peek("requestBlocked") != null)
+            {
+                ViewData["dtProximaRequisicao"] = TempData.Peek("dtProximaRequisicao").ToString();
+            }
+
             model.Entidades = _applicationServiceEntidade.GetAll().ToList();
 
             return View("Index", model);
