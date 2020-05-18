@@ -70,8 +70,15 @@ namespace RS.Presentation.Controllers
 
                     if (entidade.Result.statusCode.Equals(HttpStatusCode.OK))
                     {
-                        _applicationServiceEntidade.Add(entidade.Result.entidade);
-                        model.Entidades = _applicationServiceEntidade.GetAll().ToList();
+                        if(entidade.Result.message == null)
+                        {
+                            _applicationServiceEntidade.Add(entidade.Result.entidade);
+                            model.Entidades = _applicationServiceEntidade.GetAll().ToList();
+                        }
+                        else
+                        {
+                            model.message = entidade.Result.message;
+                        }
                     }
                     else if(entidade.Result.statusCode.Equals(HttpStatusCode.TooManyRequests))
                     {
