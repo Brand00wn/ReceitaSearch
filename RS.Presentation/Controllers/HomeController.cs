@@ -45,7 +45,7 @@ namespace RS.Presentation.Controllers
                 }
                 else
                 {
-                    if (DateTime.Now.Subtract(Convert.ToDateTime(TempData.Peek("dtProximaRequisicao"))).TotalMinutes > 1)
+                    if (DateTime.Now.Subtract(Convert.ToDateTime(TempData.Peek("dtProximaRequisicao"))).TotalSeconds >= 0)
                     {
                         TempData.Remove("dtProximaRequisicao");
                     }
